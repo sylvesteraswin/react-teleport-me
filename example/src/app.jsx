@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-import { DelayRenderFactory } from '../../lib/Teleport';
+import Teleport, { DelayRenderFactory } from '../../lib/Teleport';
 
 class App extends Component {
     handleMouseMove = () => {
@@ -15,10 +15,14 @@ class App extends Component {
             active,
         } = this.props;
 
-        return active ? (<section
-            className="app">
-            Hello There
-        </section>) : null;
+        return active ? (
+            <Teleport>
+                <section
+                    className="app">
+                    Hello There
+                </section>
+            </Teleport>
+            ) : null;
     }
 };
 
@@ -26,11 +30,19 @@ const AppDelay = DelayRenderFactory()(App);
 
 class MyApp extends Component {
     state = {
-        active: false
+        activeWith: false,
+        activeWithout: false,
     };
-    _toggleState = () => {
+
+    _toggleStateWith = () => {
         this.setState({
-            active: !this.state.active,
+            activeWith: !this.state.activeWith,
+        });
+    };
+
+    _toggleStateWithout = () => {
+        this.setState({
+            activeWithout: !this.state.activeWithout,
         });
     };
 
@@ -40,12 +52,20 @@ class MyApp extends Component {
                 className="app">
                 <button
                     className="f6 link dim br-pill ph3 pv2 mb2 dib white bg-black"
-                    onClick={this._toggleState}
+                    onClick={this._toggleStateWith}
                     >
-                    Show {this.props.title}
+                    Show {this.props.title}, With Delay
                 </button>
 
-                <AppDelay active={this.state.active} />
+                <button
+                    className="f6 link dim br-pill ph3 pv2 mb2 dib white bg-black"
+                    onClick={this._toggleStateWithout}
+                    >
+                    Show {this.props.title}, Without Delay
+                </button>
+
+                <AppDelay active={this.state.activeWith} />
+                <App active={this.state.activeWithout} />
             </section>
         );
     }
