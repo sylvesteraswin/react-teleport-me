@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react'; //eslint-disable-line no-unused-vars
 
 const DelayRenderFactory = (options = { delay: 500 }) => (DelayComponent) => {
-    return class DelayComponent extends Component {
+    return class DelayComponentRenderer extends Component {
         static propTypes = {
             active: PropTypes.bool.isRequired,
             children: PropTypes.any,
@@ -30,7 +30,7 @@ const DelayRenderFactory = (options = { delay: 500 }) => (DelayComponent) => {
             }, () => {
                 setTimeout(() => this.setState({
                     active: true,
-                }), 20);
+                }), this.props.delay);
             });
         };
 
@@ -51,13 +51,12 @@ const DelayRenderFactory = (options = { delay: 500 }) => (DelayComponent) => {
         render = () => {
             const {
                 delay, // eslint-disable-line no-unused-vars
-                ...others,
+                ...others
             } = this.props;
             const {
                 active,
                 rendered,
             } = this.state;
-            console.log('REnder');
             return rendered ? <DelayComponent {...others} active={active} /> : null;
         };
     };

@@ -11,12 +11,14 @@ class App extends Component {
     iamhere = 'Something is here';
 
     render = () => {
-        return (
-            <section
-                className="app">
-                Hello There
-            </section>
-        );
+        const {
+            active,
+        } = this.props;
+
+        return active ? (<section
+            className="app">
+            Hello There
+        </section>) : null;
     }
 };
 
