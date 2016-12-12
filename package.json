@@ -1,10 +1,10 @@
 {
-  "name": "react-teleport",
+  "name": "react-teleport-me",
   "moduleName": "Teleport",
   "version": "0.1.0",
   "description": "React component to teleport component render to body.",
-  "main": "build/react-teleport",
-  "browser": "build/react-teleport",
+  "main": "build/react-teleport-me",
+  "browser": "build/react-teleport-me",
   "devServer": {
     "host": "0.0.0.0",
     "port": 4002,
@@ -21,20 +21,24 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sylvesteraswin/react-teleport.git"
+    "url": "https://github.com/sylvesteraswin/react-teleport-me.git"
   },
   "keywords": [
     "react",
     "teleport",
-    "react-teleport",
+    "react-teleport-me",
     "react-component"
   ],
   "author": "Sylvester Aswin",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sylvesteraswin/react-teleport/issues"
+    "url": "https://github.com/sylvesteraswin/react-teleport-me/issues"
   },
-  "homepage": "https://github.com/sylvesteraswin/react-teleport",
+  "homepage": "https://github.com/sylvesteraswin/react-teleport-me",
+  "peerDependencies": {
+    "react": ">=0.14.0",
+    "react-dom": ">=0.14.0"
+  },
   "devDependencies": {
     "autoprefixer": "^6.5.0",
     "babel": "^6.5.2",
