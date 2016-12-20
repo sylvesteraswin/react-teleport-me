@@ -1,6 +1,6 @@
-import React, { Component, PropTypes } from 'react'; //eslint-disable-line no-unused-vars
+import React, { Component, PropTypes } from 'react'; // eslint-disable-line no-unused-vars
 
-const DelayRenderFactory = (options = { delay: 500 }) => (DelayComponent) => {
+const DelayRenderFactory = (options = { delay: 500 }) => (DelayComponent) => { // eslint-disable-line no-unused-vars
     return class DelayComponentRenderer extends Component {
         static propTypes = {
             active: PropTypes.bool.isRequired,

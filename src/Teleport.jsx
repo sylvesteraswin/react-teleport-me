@@ -1,21 +1,25 @@
 import React, {Component, PropTypes} from 'react'; //eslint-disable-line no-unused-vars
 import ReactDOM from 'react-dom';
-import shallowCompare from 'react-addons-shallow-compare';
+import cn from 'classnames';
 
 const getContainer = (container) => {
     const _container = typeof container === 'function' ? container() : container;
     return ReactDOM.findDOMNode(_container) || document.body;
 };
 
+const BASE_CLASS = 'zvui';
+
 class Teleport extends Component {
     static propTypes = {
         children: PropTypes.any,
         container: PropTypes.any,
         lockBody: PropTypes.bool,
+        className: PropTypes.string,
     };
 
     static defaultProps = {
         lockBody: true,
+        className: '',
     };
 
     componentDidMount = () => {
@@ -56,6 +60,7 @@ class Teleport extends Component {
     _mountOverlayTarget = () => {
         if (!this._overlayTarget) {
             this._overlayTarget = document.createElement('div');
+            this._overlayTarget.className = cn(BASE_CLASS, this.props.className);
             this._teleportContainerNode = getContainer(this.props.container);
             this._teleportContainerNode.appendChild(this._overlayTarget);
         }

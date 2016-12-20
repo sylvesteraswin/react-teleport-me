@@ -78,11 +78,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _reactAddonsShallowCompare = __webpack_require__(4);
+	var _classnames = __webpack_require__(4);
 
-	var _reactAddonsShallowCompare2 = _interopRequireDefault(_reactAddonsShallowCompare);
+	var _classnames2 = _interopRequireDefault(_classnames);
 
-	var _DelayRenderFactory2 = __webpack_require__(7);
+	var _DelayRenderFactory2 = __webpack_require__(5);
 
 	var _DelayRenderFactory3 = _interopRequireDefault(_DelayRenderFactory2);
 
@@ -112,6 +112,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _container = typeof container === 'function' ? container() : container;
 	    return _reactDom2.default.findDOMNode(_container) || document.body;
 	};
+
+	var BASE_CLASS = 'zvui';
 
 	var Teleport = (_temp2 = _class = function (_Component) {
 	    _inherits(Teleport, _Component);
@@ -153,6 +155,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }, _this._mountOverlayTarget = function () {
 	            if (!_this._overlayTarget) {
 	                _this._overlayTarget = document.createElement('div');
+	                _this._overlayTarget.className = (0, _classnames2.default)(BASE_CLASS, _this.props.className);
 	                _this._teleportContainerNode = getContainer(_this.props.container);
 	                _this._teleportContainerNode.appendChild(_this._overlayTarget);
 	            }
@@ -191,9 +194,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	}(_react.Component), _class.propTypes = {
 	    children: _react.PropTypes.any,
 	    container: _react.PropTypes.any,
-	    lockBody: _react.PropTypes.bool
+	    lockBody: _react.PropTypes.bool,
+	    className: _react.PropTypes.string
 	}, _class.defaultProps = {
-	    lockBody: true
+	    lockBody: true,
+	    className: ''
 	}, _temp2);
 	exports.default = Teleport;
 	exports.DelayRenderFactory = _DelayRenderFactory3.default;
@@ -214,111 +219,58 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(5);
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	  Copyright (c) 2016 Jed Watson.
+	  Licensed under the MIT License (MIT), see
+	  http://jedwatson.github.io/classnames
+	*/
+	/* global define */
+
+	(function () {
+		'use strict';
+
+		var hasOwn = {}.hasOwnProperty;
+
+		function classNames () {
+			var classes = [];
+
+			for (var i = 0; i < arguments.length; i++) {
+				var arg = arguments[i];
+				if (!arg) continue;
+
+				var argType = typeof arg;
+
+				if (argType === 'string' || argType === 'number') {
+					classes.push(arg);
+				} else if (Array.isArray(arg)) {
+					classes.push(classNames.apply(null, arg));
+				} else if (argType === 'object') {
+					for (var key in arg) {
+						if (hasOwn.call(arg, key) && arg[key]) {
+							classes.push(key);
+						}
+					}
+				}
+			}
+
+			return classes.join(' ');
+		}
+
+		if (typeof module !== 'undefined' && module.exports) {
+			module.exports = classNames;
+		} else if (true) {
+			// register as 'classnames', consistent with npm package name
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+				return classNames;
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else {
+			window.classNames = classNames;
+		}
+	}());
+
 
 /***/ },
 /* 5 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 */
-
-	'use strict';
-
-	var shallowEqual = __webpack_require__(6);
-
-	/**
-	 * Does a shallow comparison for props and state.
-	 * See ReactComponentWithPureRenderMixin
-	 * See also https://facebook.github.io/react/docs/shallow-compare.html
-	 */
-	function shallowCompare(instance, nextProps, nextState) {
-	  return !shallowEqual(instance.props, nextProps) || !shallowEqual(instance.state, nextState);
-	}
-
-	module.exports = shallowCompare;
-
-/***/ },
-/* 6 */
-/***/ function(module, exports) {
-
-	/**
-	 * Copyright (c) 2013-present, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @typechecks
-	 * 
-	 */
-
-	/*eslint-disable no-self-compare */
-
-	'use strict';
-
-	var hasOwnProperty = Object.prototype.hasOwnProperty;
-
-	/**
-	 * inlined Object.is polyfill to avoid requiring consumers ship their own
-	 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is
-	 */
-	function is(x, y) {
-	  // SameValue algorithm
-	  if (x === y) {
-	    // Steps 1-5, 7-10
-	    // Steps 6.b-6.e: +0 != -0
-	    // Added the nonzero y check to make Flow happy, but it is redundant
-	    return x !== 0 || y !== 0 || 1 / x === 1 / y;
-	  } else {
-	    // Step 6.a: NaN == NaN
-	    return x !== x && y !== y;
-	  }
-	}
-
-	/**
-	 * Performs equality by iterating through keys on an object and returning false
-	 * when any key has values which are not strictly equal between the arguments.
-	 * Returns true when the values of all keys are strictly equal.
-	 */
-	function shallowEqual(objA, objB) {
-	  if (is(objA, objB)) {
-	    return true;
-	  }
-
-	  if (typeof objA !== 'object' || objA === null || typeof objB !== 'object' || objB === null) {
-	    return false;
-	  }
-
-	  var keysA = Object.keys(objA);
-	  var keysB = Object.keys(objB);
-
-	  if (keysA.length !== keysB.length) {
-	    return false;
-	  }
-
-	  // Test for A's keys different from B.
-	  for (var i = 0; i < keysA.length; i++) {
-	    if (!hasOwnProperty.call(objB, keysA[i]) || !is(objA[keysA[i]], objB[keysA[i]])) {
-	      return false;
-	    }
-	  }
-
-	  return true;
-	}
-
-	module.exports = shallowEqual;
-
-/***/ },
-/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -369,13 +321,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 	}
 
-	//eslint-disable-line no-unused-vars
+	// eslint-disable-line no-unused-vars
 
 	var DelayRenderFactory = function DelayRenderFactory() {
 	    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { delay: 500 };
 	    return function (DelayComponent) {
 	        var _class, _temp2;
 
+	        // eslint-disable-line no-unused-vars
 	        return _temp2 = _class = function (_Component) {
 	            _inherits(DelayComponentRenderer, _Component);
 

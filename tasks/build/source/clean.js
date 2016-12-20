@@ -1,5 +1,5 @@
 import del from 'del';
 
 module.exports = () => {
-    del.sync(['build']);
+    del.sync(['build', 'lib']);
 };
