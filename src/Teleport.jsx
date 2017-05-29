@@ -42,7 +42,7 @@ class Teleport extends Component {
     componentWillUnmount = () => {
         this._unrenderOverlay();
         this._unmountOverlayTarget();
-        this._unlockBody();
+        if (this.props.lockBody) this._unlockBody();
     };
 
     _lockBody() {
