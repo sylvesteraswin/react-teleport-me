@@ -46,11 +46,19 @@ class Teleport extends Component {
     };
 
     _lockBody() {
-        window.document.body.classList.add(`${BASE_CLASS}_teleport-lock`)
+        this._scrollPosition = window.scrollY;
+        window.document.body.style.position = 'fixed';
+        window.document.body.style.width = '100vw';
+        window.document.body.style['margin-top'] = `-${this._scrollPosition}px`;
+        window.document.body.classList.add(`${BASE_CLASS}_teleport-lock`);
     }
 
     _unlockBody() {
-        window.document.body.classList.remove(`${BASE_CLASS}_teleport-lock`)
+        window.document.body.style.position = 'initial';
+        window.document.body.style.width = 'initial';
+        window.document.body.style['margin-top'] = 'initial';
+        window.scrollTo(0, this._scrollPosition);
+        window.document.body.classList.remove(`${BASE_CLASS}_teleport-lock`);
     }
 
     _renderOverlay = () => {
