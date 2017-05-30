@@ -67,6 +67,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	});
 	exports.DelayRenderFactory = undefined;
 
+	var _createClass = function () {
+	    function defineProperties(target, props) {
+	        for (var i = 0; i < props.length; i++) {
+	            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+	        }
+	    }return function (Constructor, protoProps, staticProps) {
+	        if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+	    };
+	}();
+
 	var _class, _temp2; //eslint-disable-line no-unused-vars
 
 
@@ -99,12 +109,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	function _possibleConstructorReturn(self, call) {
 	    if (!self) {
 	        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-	    }return call && ((typeof call === 'undefined' ? 'undefined' : _typeof(call)) === "object" || typeof call === "function") ? call : self;
+	    }return call && ((typeof call === "undefined" ? "undefined" : _typeof(call)) === "object" || typeof call === "function") ? call : self;
 	}
 
 	function _inherits(subClass, superClass) {
 	    if (typeof superClass !== "function" && superClass !== null) {
-	        throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === 'undefined' ? 'undefined' : _typeof(superClass)));
+	        throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
 	    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 	}
 
@@ -130,6 +140,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Teleport.__proto__ || Object.getPrototypeOf(Teleport)).call.apply(_ref, [this].concat(args))), _this), _this.componentDidMount = function () {
+	            if (_this.props.lockBody) _this._lockBody();
 	            _this._renderOverlay();
 	        }, _this.componentWillReceiveProps = function (nextProps) {
 	            if (_this._overlayTarget && nextProps.container !== _this.props.container) {
@@ -142,6 +153,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }, _this.componentWillUnmount = function () {
 	            _this._unrenderOverlay();
 	            _this._unmountOverlayTarget();
+	            if (_this.props.lockBody) _this._unlockBody();
 	        }, _this._renderOverlay = function () {
 	            var overlay = !_this.props.children ? null : _react2.default.Children.only(_this.props.children);
 
@@ -190,6 +202,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }, _temp), _possibleConstructorReturn(_this, _ret);
 	    }
 
+	    _createClass(Teleport, [{
+	        key: '_lockBody',
+	        value: function _lockBody() {
+	            this._scrollPosition = window.scrollY;
+	            window.document.body.style.position = 'fixed';
+	            window.document.body.style.width = '100vw';
+	            window.document.body.style['margin-top'] = '-' + this._scrollPosition + 'px';
+	            window.document.body.classList.add(BASE_CLASS + '_teleport-lock');
+	        }
+	    }, {
+	        key: '_unlockBody',
+	        value: function _unlockBody() {
+	            window.document.body.style.position = 'initial';
+	            window.document.body.style.width = 'initial';
+	            window.document.body.style['margin-top'] = 'initial';
+	            window.scrollTo(0, this._scrollPosition);
+	            window.document.body.classList.remove(BASE_CLASS + '_teleport-lock');
+	        }
+	    }]);
+
 	    return Teleport;
 	}(_react.Component), _class.propTypes = {
 	    children: _react.PropTypes.any,
@@ -197,7 +229,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    lockBody: _react.PropTypes.bool,
 	    className: _react.PropTypes.string
 	}, _class.defaultProps = {
-	    lockBody: true,
+	    lockBody: false,
 	    className: ''
 	}, _temp2);
 	exports.default = Teleport;

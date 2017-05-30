@@ -1,7 +1,7 @@
 {
   "name": "react-teleport-me",
   "moduleName": "Teleport",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "React component to teleport component render to body.",
   "main": "build/react-teleport-me",
   "browser": "build/react-teleport-me",
