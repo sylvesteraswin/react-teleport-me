@@ -18,11 +18,12 @@ class Teleport extends Component {
     };
 
     static defaultProps = {
-        lockBody: true,
+        lockBody: false,
         className: '',
     };
 
     componentDidMount = () => {
+        if (this.props.lockBody) this._lockBody();
         this._renderOverlay();
     };
 
@@ -41,7 +42,24 @@ class Teleport extends Component {
     componentWillUnmount = () => {
         this._unrenderOverlay();
         this._unmountOverlayTarget();
+        if (this.props.lockBody) this._unlockBody();
     };
+
+    _lockBody() {
+        this._scrollPosition = window.scrollY;
+        window.document.body.style.position = 'fixed';
+        window.document.body.style.width = '100vw';
+        window.document.body.style['margin-top'] = `-${this._scrollPosition}px`;
+        window.document.body.classList.add(`${BASE_CLASS}_teleport-lock`);
+    }
+
+    _unlockBody() {
+        window.document.body.style.position = 'initial';
+        window.document.body.style.width = 'initial';
+        window.document.body.style['margin-top'] = 'initial';
+        window.scrollTo(0, this._scrollPosition);
+        window.document.body.classList.remove(`${BASE_CLASS}_teleport-lock`);
+    }
 
     _renderOverlay = () => {
         const overlay = !this.props.children ? null : React.Children.only(this.props.children);

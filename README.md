@@ -31,6 +31,9 @@ class App extends Component {
 }
 ```
 
+You can set the `lockBody` property to `true` to add the `zvui_teleport-lock` class to the body.
+Scroll position and body properties to block scroll will be handled automatically
+
 
 ## Dependencies
 
