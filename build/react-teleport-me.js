@@ -165,6 +165,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Teleport.__proto__ || Object.getPrototypeOf(Teleport)).call.apply(_ref, [this].concat(args))), _this), _this.componentDidMount = function () {
+	            _this._scrollbarWidth = getScrollbarWidth();
 	            if (_this.props.lockBody) _this._lockBody();
 	            _this._renderOverlay();
 	        }, _this.componentWillReceiveProps = function (nextProps) {
@@ -235,7 +236,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            window.document.body.style.width = '100vw';
 	            window.document.body.style['margin-top'] = '-' + this._scrollPosition + 'px';
 	            window.document.body.classList.add(BASE_CLASS + '_teleport-lock');
-	            window.document.body.style['padding-right'] = getScrollbarWidth() + 'px';
+	            window.document.body.style['padding-right'] = this._scrollbarWidth + 'px';
 	        }
 	    }, {
 	        key: '_unlockBody',

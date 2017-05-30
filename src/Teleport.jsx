@@ -48,6 +48,7 @@ class Teleport extends Component {
     };
 
     componentDidMount = () => {
+        this._scrollbarWidth = getScrollbarWidth();
         if (this.props.lockBody) this._lockBody();
         this._renderOverlay();
     };
@@ -76,7 +77,7 @@ class Teleport extends Component {
         window.document.body.style.width = '100vw';
         window.document.body.style['margin-top'] = `-${this._scrollPosition}px`;
         window.document.body.classList.add(`${BASE_CLASS}_teleport-lock`);
-        window.document.body.style['padding-right'] = `${getScrollbarWidth()}px`;
+        window.document.body.style['padding-right'] = `${this._scrollbarWidth}px`;
     }
 
     _unlockBody() {
