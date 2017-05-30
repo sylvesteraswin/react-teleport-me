@@ -7,6 +7,31 @@ const getContainer = (container) => {
     return ReactDOM.findDOMNode(_container) || document.body;
 };
 
+function getScrollbarWidth() {
+    const outer = document.createElement('div');
+    outer.style.visibility = 'hidden';
+    outer.style.width = '100px';
+    outer.style.msOverflowStyle = 'scrollbar'; // needed for WinJS apps
+
+    document.body.appendChild(outer);
+
+    const widthNoScroll = outer.offsetWidth;
+    // force scrollbars
+    outer.style.overflow = 'scroll';
+
+    // add innerdiv
+    const inner = document.createElement('div');
+    inner.style.width = '100%';
+    outer.appendChild(inner);
+
+    const widthWithScroll = inner.offsetWidth;
+
+    // remove divs
+    outer.parentNode.removeChild(outer);
+
+    return widthNoScroll - widthWithScroll;
+}
+
 const BASE_CLASS = 'zvui';
 
 class Teleport extends Component {
@@ -23,6 +48,7 @@ class Teleport extends Component {
     };
 
     componentDidMount = () => {
+        this._scrollbarWidth = getScrollbarWidth();
         if (this.props.lockBody) this._lockBody();
         this._renderOverlay();
     };
@@ -51,6 +77,7 @@ class Teleport extends Component {
         window.document.body.style.width = '100vw';
         window.document.body.style['margin-top'] = `-${this._scrollPosition}px`;
         window.document.body.classList.add(`${BASE_CLASS}_teleport-lock`);
+        window.document.body.style['padding-right'] = `${this._scrollbarWidth}px`;
     }
 
     _unlockBody() {
@@ -59,6 +86,7 @@ class Teleport extends Component {
         window.document.body.style['margin-top'] = 'initial';
         window.scrollTo(0, this._scrollPosition);
         window.document.body.classList.remove(`${BASE_CLASS}_teleport-lock`);
+        window.document.body.style['padding-right'] = 'initial';
     }
 
     _renderOverlay = () => {

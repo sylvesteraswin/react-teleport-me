@@ -52,13 +52,13 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__(1).default;
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -123,6 +123,31 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return _reactDom2.default.findDOMNode(_container) || document.body;
 	};
 
+	function getScrollbarWidth() {
+	    var outer = document.createElement('div');
+	    outer.style.visibility = 'hidden';
+	    outer.style.width = '100px';
+	    outer.style.msOverflowStyle = 'scrollbar'; // needed for WinJS apps
+
+	    document.body.appendChild(outer);
+
+	    var widthNoScroll = outer.offsetWidth;
+	    // force scrollbars
+	    outer.style.overflow = 'scroll';
+
+	    // add innerdiv
+	    var inner = document.createElement('div');
+	    inner.style.width = '100%';
+	    outer.appendChild(inner);
+
+	    var widthWithScroll = inner.offsetWidth;
+
+	    // remove divs
+	    outer.parentNode.removeChild(outer);
+
+	    return widthNoScroll - widthWithScroll;
+	}
+
 	var BASE_CLASS = 'zvui';
 
 	var Teleport = (_temp2 = _class = function (_Component) {
@@ -140,6 +165,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Teleport.__proto__ || Object.getPrototypeOf(Teleport)).call.apply(_ref, [this].concat(args))), _this), _this.componentDidMount = function () {
+	            _this._scrollbarWidth = getScrollbarWidth();
 	            if (_this.props.lockBody) _this._lockBody();
 	            _this._renderOverlay();
 	        }, _this.componentWillReceiveProps = function (nextProps) {
@@ -210,6 +236,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            window.document.body.style.width = '100vw';
 	            window.document.body.style['margin-top'] = '-' + this._scrollPosition + 'px';
 	            window.document.body.classList.add(BASE_CLASS + '_teleport-lock');
+	            window.document.body.style['padding-right'] = this._scrollbarWidth + 'px';
 	        }
 	    }, {
 	        key: '_unlockBody',
@@ -219,6 +246,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            window.document.body.style['margin-top'] = 'initial';
 	            window.scrollTo(0, this._scrollPosition);
 	            window.document.body.classList.remove(BASE_CLASS + '_teleport-lock');
+	            window.document.body.style['padding-right'] = 'initial';
 	        }
 	    }]);
 
@@ -235,21 +263,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	exports.default = Teleport;
 	exports.DelayRenderFactory = _DelayRenderFactory3.default;
 
-/***/ },
+/***/ }),
 /* 2 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
 
-/***/ },
+/***/ }),
 /* 3 */
-/***/ function(module, exports) {
+/***/ (function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
 
-/***/ },
+/***/ }),
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	  Copyright (c) 2016 Jed Watson.
@@ -301,9 +329,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	}());
 
 
-/***/ },
+/***/ }),
 /* 5 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -437,7 +465,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	exports.default = DelayRenderFactory;
 
-/***/ }
+/***/ })
 /******/ ])
 });
 ;
